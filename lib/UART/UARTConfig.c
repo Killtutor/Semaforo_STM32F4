@@ -1,4 +1,16 @@
-public void UARTConfig(){
+//Todo lo que necesito para hacer que esta libreria funcione esta aqui:
+#include "stm32f4_discovery.h"
+#include <stm32f4xx_hal.h>
+#include <stm32_hal_legacy.h>
+
+//Aqui las declaraciones de mis funciones de libreria
+static void UARTConfig();
+static UART_HandleTypeDef s_UARTHandle;
+
+
+
+//Y finalmente las funciones como tal perse.
+static void UARTConfig(){
 __HAL_RCC_GPIOA_CLK_ENABLE();
 __USART2_CLK_ENABLE();
 
@@ -13,6 +25,7 @@ HAL_GPIO_Init(GPIOA, &GPIO_UART_Struct);
 GPIO_UART_Struct.Pin = GPIO_PIN_3;
 GPIO_UART_Struct.Mode = GPIO_MODE_AF_OD;
 HAL_GPIO_Init(GPIOA, &GPIO_UART_Struct);
+
 
 s_UARTHandle.Instance = USART2;
 s_UARTHandle.Init.BaudRate = 115200;
