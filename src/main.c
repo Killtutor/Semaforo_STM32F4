@@ -25,13 +25,14 @@
 #include "stm32f4_discovery.h"
 #include "stm32f4xx_hal_tim.h"
 #include "stm32f4xx_hal_rcc.h"
-#include "UARTConfig.c"
+//#include "UARTConfig.c"
 
 
 static TIM_HandleTypeDef timerInstance = { 
     .Instance = TIM2
 };
 
+#define HCSR04_NUMBER			((float)0.0171821) // Para convertir de ms a cm
 int t2Counter = 0;
 int contadorRojo = 10;
 int contadorVerde = 10;
@@ -88,11 +89,12 @@ void initializeLeds(){
   BSP_LED_Init(LED6);   //Led Verde
 }
 
-void reinicioVerde(){
-  contadorSema=1;
-  printf("Enciendo Verde");
-  BSP_LED_Off(LED3);
-  BSP_LED_On(LED6);
+void reinicioRojo(){
+  contadorSema=15;
+  printf("Enciendo Rojo");
+  BSP_LED_Off(LED6);
+  BSP_LED_Off(LED5);
+  BSP_LED_On(LED3);
 }
 
 //Funcion que maneja las interrupciones del Tim2
@@ -143,7 +145,7 @@ void BUTTON_IRQHandler(){
           __NOP;
         }
         if (BSP_PB_GetState(BUTTON_KEY)==1){              //Ahora si confirmo que se presiono el boton
-          reinicioVerde();                                //Reinicio el Verde porque si.
+          reinicioRojo();                                //Reinicio el Verde porque si.
         }
       }
     }
@@ -156,7 +158,7 @@ int main (){
   initializeLeds();
   initializeTimers();
   initBoton();
-  
+
   while (1){
   }
 }
